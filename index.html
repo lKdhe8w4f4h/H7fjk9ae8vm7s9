@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Past Paper</title>
+  <style>
+    :root { --primary-color: #4a6fa5;  --secondary-color: #6b8cbc;  --background-color: #f5f7fa;  --card-color: #ffffff;  --text-color: #333333;  --border-color: #dddddd;  }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: var(--text-color); background-color: var(--background-color); padding: 20px; }
+    header { text-align: center; margin-bottom: 30px; padding: 20px; background-color: var(--primary-color); color: white; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    h1 { margin-bottom: 10px; }
+    .container { display: flex; flex-wrap: wrap; gap: 20px; max-width: 1400px; margin: 0 auto; }
+    .filters { flex: 1; min-width: 300px; background-color: var(--card-color); padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); max-height: 80vh; overflow-y: auto; } .filter-group { margin-bottom: 20px; } .filter-group h3 { margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid var(--border-color); color: var(--primary-color); } .filter-options { display: flex; flex-wrap: wrap; gap: 8px; } .filter-option { background-color: #f0f0f0; border: 1px solid var(--border-color); border-radius: 4px; padding: 6px 12px; cursor: pointer; transition: all 0.2s; font-size: 0.9rem; } .filter-option:hover { background-color: #e0e0e0; } .filter-option.selected { background-color: var(--primary-color); color: white; border-color: var(--primary-color); } .topic-input-wrapper { display: flex; gap: 8px; margin-bottom: 10px; }
+    .topic-input { flex: 1; padding: 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.9rem; }
+    .clear-topic-btn {background-color: #6c757d; color: white; border: none; border-radius: 4px; padding: 8px 12px; cursor: pointer; font-size: 0.9rem; white-space: nowrap; }
+    .clear-topic-btn:hover { background-color: #5a6268; }
+    #chapter-input { width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 4px; }
+    .results { flex: 3; min-width: 300px; }
+    .results-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; gap: 10px; flex-wrap: wrap; }
+    .results-count { font-weight: bold; color: var(--primary-color); font-size: 1.1rem; }
+    .selected-count { font-weight: bold; color: #27ae60; margin-left: 10px; }
+    .reset-btn,  .selection-btn, .pdf-btn { color: white; border: none; border-radius: 4px; cursor: pointer; transition: background-color 0.2s; }
+    .reset-btn { background-color: #e74c3c; padding: 8px 16px; }
+    .reset-btn:hover { background-color: #c0392b; }
+    .selection-controls { display: flex; gap: 10px; margin-bottom: 15px; }
+    .selection-btn { background-color: #6c757d; padding: 6px 12px; font-size: 0.9rem; }
+    .selection-btn:hover { background-color: #5a6268; }
+    .image-grid { display: grid; grid-template-columns: 1fr; gap: 25px; max-width: 900px; margin: 0 auto; }
+    .year-title { grid-column: 1 / -1; font-size: 1.5rem; font-weight: bold; color: var(--primary-color); margin: 20px 0 10px; padding-bottom: 10px; border-bottom: 2px solid var(--primary-color); }
+    .image-card { background-color: var(--card-color); border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: transform 0.2s; display: flex; flex-direction: column; position: relative; }
+    .image-card:hover { transform: translateY(-5px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
+    .image-card.selected { border: 2px solid var(--primary-color); box-shadow: 0 4px 8px rgba(74,111,165,0.3); }
+    .checkbox-container { position: absolute; top: 10px; left: 10px; z-index: 10; display: flex; align-items: center; gap: 5px; }
+    .image-checkbox { width: 20px; height: 20px; cursor: pointer; }
+    .selection-order { background-color: var(--primary-color); color: white; border-radius: 50%; width: 24px; height: 24px; display: none; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; }
+    .image-info { padding: 20px; border-bottom: 1px solid var(--border-color); background-color: #fafafa; }
+    .title-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+    .title-row h4 { margin-bottom: 0; flex: 1; color: var(--primary-color); font-size: 1.2rem; border-bottom: 2px solid var(--primary-color); padding-bottom: 8px; }
+    .title-buttons { display: flex; gap: 8px; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
+    .pdf-btn { background-color: #8e44ad; padding: 6px 12px; font-size: 0.9rem; }
+    .pdf-btn:hover { background-color: #732d91; }
+    .pdf-btn.ce-btn { background-color: #d35400; }
+    .pdf-btn.ce-btn:hover { background-color: #a04000; }
+    .pdf-btn:disabled { background-color: #aaa; cursor: not-allowed; }
+    .image-container { width: 100%; height: auto; background-color: #f8f8f8; padding: 15px; display: block; text-align: left; }
+    .image-container img { width: auto; height: auto; max-width: 100%; max-height: 70vh; object-fit: contain; border: 1px solid #eee; border-radius: 4px; }
+    .loading, .no-results { text-align: center; padding: 30px; font-size: 1.1rem; color: var(--primary-color); }
+    .initial-prompt { text-align: center; padding: 60px 40px; background-color: #f8f9fa; border-radius: 8px; border: 2px dashed #dee2e6; margin: 20px 0; }
+    .prompt-content h3 { color: var(--primary-color); margin-bottom: 15px; font-size: 1.5rem; }
+    .prompt-tips { text-align: left; max-width: 500px; margin: 0 auto; background: white; padding: 20px; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .prompt-tips ul { margin: 10px 0; padding-left: 20px; }
+    .progress-bar { width: 100%; height: 20px; background-color: #f0f0f0; border-radius: 10px; overflow: hidden; margin-bottom: 5px; }
+    .progress-fill { height: 100%; background-color: #4a6fa5; width: 0%; transition: width 0.3s; }
+    .progress-text { font-size: 0.9rem; color: #666; text-align: center; }
+    .error-message { color: #b00020; padding: 10px; background: #ffeaea; border-radius: 4px; margin-bottom: 15px; }
+    #login-gate { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .login-box { width: 100%; max-width: 420px; background: var(--card-color); border-radius: 10px; padding: 28px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); text-align: center; } .login-box h2 { color: var(--primary-color); margin-bottom: 12px; } .login-box p { margin-bottom: 18px; color: #555; }
+    .login-box input { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 1rem; margin-bottom: 12px; } .login-box button { width: 100%; padding: 12px; background: var(--primary-color); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 1rem; } .login-box button:hover { background: var(--secondary-color); }
+    #login-error { display: none; margin-top: 12px; color: #b00020; background: #ffeaea; border-radius: 4px; padding: 8px; font-size: 0.95rem; }
+    #app[hidden] { display: none; }
+  </style>
+</head>
+<body>
+<body>
+  <div id="login-gate">
+    <form class="login-box" id="login-form">
+      <h2>Past Paper</h2>
+      <p>Please enter password to continue.</p>
+      <input type="password" id="password-input" placeholder="Password" autocomplete="current-password" required>
+      <button type="submit">Login</button>
+      <div id="login-error">Incorrect password. Please try again.</div>
+    </form>
+  </div>
+  <div id="app" hidden>
+    <header><h1>Past Paper - Do not disclose/forward.</h1></header>
+    <div id="error-container"></div>
+    <div class="container">
+    <div class="filters">
+      <div class="filter-group"><h3>Stage</h3><div class="filter-options" id="stage-filters"></div></div>
+      <div class="filter-group"><h3>Year</h3><div class="filter-options" id="year-filters"></div></div>
+      <div class="filter-group"><h3>Paper</h3><div class="filter-options" id="paper-filters"></div></div>
+      <div class="filter-group"><h3>Section</h3><div class="filter-options" id="section-filters"></div></div>
+      <div class="filter-group"><h3>Level</h3><div class="filter-options" id="level-filters"></div></div>
+      <div class="filter-group"><h3>Strand</h3><div class="filter-options" id="strand-filters"></div></div>
+      <div class="filter-group"><h3>Chapter</h3><input type="text" id="chapter-input" placeholder="Input book and chapter (e.g. 6A01)"></div>
+      <div class="filter-group"><h3>Topic</h3>
+      <div class="topic-input-wrapper">  <input  type="text"  id="topic-input"  placeholder="e.g. property of circle;law of indices"   class="topic-input" >  <button type="button" id="clear-topic-input" class="clear-topic-btn">   Clear  </button>      </div>
+      <div class="filter-options" id="topic-filters"></div></div>
+    </div>
+    <div class="results">      <div class="results-header">        <div class="results-count"><span id="result-count">0</span> question(s) is/are found. <span class="selected-count" id="selected-count">(0 selected)</span></div>        <div>          <button class="reset-btn" id="reset-btn">Reset Filter</button>        </div>      </div>
+      <div class="selection-controls">
+        <button class="selection-btn" id="select-all-btn">Select All</button>
+        <button class="selection-btn" id="select-none-btn">Select None</button>
+      </div>
+      <div class="loading" id="loading">Loading...</div>
+      <div class="image-grid" id="image-grid"></div>
+      <div class="no-results" id="no-results" style="display:none;">No questions are found</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const PASSWORD_HASH_FILE = 'state_o.txt'; const PROTECTED_SCRIPTS = [ 'state.js', 'data.js', 'filter_render.js', 'drive_view.js', 'selection_utils.js' ];
+  async function sha256Hex(text) { const encoder = new TextEncoder(); const data = encoder.encode(text); const hashBuffer = await crypto.subtle.digest('SHA-256', data); return Array.from(new Uint8Array(hashBuffer)) .map(byte => byte.toString(16).padStart(2, '0')) .join(''); }
+  async function getStoredPasswordHash() { const response = await fetch(PASSWORD_HASH_FILE, { cache: 'no-store' }); if (!response.ok) { throw new Error('Cannot load password hash file.'); } return (await response.text()).trim().toLowerCase(); }
+  function loadScript(src) { return new Promise((resolve, reject) => { const script = document.createElement('script'); script.src = src; script.onload = resolve; script.onerror = () => reject(new Error('Failed to load ' + src)); document.body.appendChild(script); });}
+  async function loadProtectedPage() { document.getElementById('login-gate').style.display = 'none'; document.getElementById('app').hidden = false; for (const src of PROTECTED_SCRIPTS) { await loadScript(src); } document.dispatchEvent(new Event('DOMContentLoaded'));} document.getElementById('login-form').addEventListener('submit', async function (event) { event.preventDefault(); const passwordInput = document.getElementById('password-input'); const loginError = document.getElementById('login-error'); const enteredPassword = passwordInput.value; loginError.style.display = 'none'; try { const storedHash = await getStoredPasswordHash();  const enteredHash = await sha256Hex(enteredPassword); if (enteredHash === storedHash) { sessionStorage.setItem('pastpaper_authenticated', '1'); await loadProtectedPage(); } else { passwordInput.value = ''; loginError.style.display = 'block'; } } catch (error) { loginError.textContent = 'Unable to verify password. Please try again later.'; loginError.style.display = 'block'; console.error(error); } });
+  window.addEventListener('load', async function () { if (sessionStorage.getItem('pastpaper_authenticated') === '1') {  await loadProtectedPage(); } });
+</script>
+</body>
+</html>
