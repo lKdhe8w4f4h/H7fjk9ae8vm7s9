@@ -4,14 +4,46 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Past Paper</title>
+
   <style>
-    :root { --primary-color: #4a6fa5;  --secondary-color: #6b8cbc;  --background-color: #f5f7fa;  --card-color: #ffffff;  --text-color: #333333;  --border-color: #dddddd;  }
+    :root {
+      --primary-color: #4a6fa5;
+      --secondary-color: #6b8cbc;
+      --background-color: #f5f7fa;
+      --card-color: #ffffff;
+      --text-color: #333333;
+      --border-color: #dddddd;
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: var(--text-color); background-color: var(--background-color); padding: 20px; }
-    header { text-align: center; margin-bottom: 30px; padding: 20px; background-color: var(--primary-color); color: white; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: var(--text-color);
+      background-color: var(--background-color);
+      padding: 20px;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding: 20px;
+      background-color: var(--primary-color);
+      color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
     h1 { margin-bottom: 10px; }
     .container { display: flex; flex-wrap: wrap; gap: 20px; max-width: 1400px; margin: 0 auto; }
-    .filters { flex: 1; min-width: 300px; background-color: var(--card-color); padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); max-height: 80vh; overflow-y: auto; } .filter-group { margin-bottom: 20px; } .filter-group h3 { margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid var(--border-color); color: var(--primary-color); } .filter-options { display: flex; flex-wrap: wrap; gap: 8px; } .filter-option { background-color: #f0f0f0; border: 1px solid var(--border-color); border-radius: 4px; padding: 6px 12px; cursor: pointer; transition: all 0.2s; font-size: 0.9rem; } .filter-option:hover { background-color: #e0e0e0; } .filter-option.selected { background-color: var(--primary-color); color: white; border-color: var(--primary-color); } .topic-input-wrapper { display: flex; gap: 8px; margin-bottom: 10px; }
+    .filters {
+      flex: 1; min-width: 300px; background-color: var(--card-color); padding: 20px;
+      border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); max-height: 80vh; overflow-y: auto;
+    }
+    .filter-group { margin-bottom: 20px; }
+    .filter-group h3 { margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid var(--border-color); color: var(--primary-color); }
+    .filter-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .filter-option { background-color: #f0f0f0; border: 1px solid var(--border-color); border-radius: 4px; padding: 6px 12px; cursor: pointer; transition: all 0.2s; font-size: 0.9rem; }
+    .filter-option:hover { background-color: #e0e0e0; }
+    .filter-option.selected { background-color: var(--primary-color); color: white; border-color: var(--primary-color); }
+    .topic-input-wrapper { display: flex; gap: 8px; margin-bottom: 10px; }
     .topic-input { flex: 1; padding: 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.9rem; }
     .clear-topic-btn {background-color: #6c757d; color: white; border: none; border-radius: 4px; padding: 8px 12px; cursor: pointer; font-size: 0.9rem; white-space: nowrap; }
     .clear-topic-btn:hover { background-color: #5a6268; }
@@ -20,7 +52,9 @@
     .results-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; gap: 10px; flex-wrap: wrap; }
     .results-count { font-weight: bold; color: var(--primary-color); font-size: 1.1rem; }
     .selected-count { font-weight: bold; color: #27ae60; margin-left: 10px; }
-    .reset-btn,  .selection-btn, .pdf-btn { color: white; border: none; border-radius: 4px; cursor: pointer; transition: background-color 0.2s; }
+    .reset-btn,  .selection-btn, .pdf-btn {
+      color: white; border: none; border-radius: 4px; cursor: pointer; transition: background-color 0.2s;
+    }
     .reset-btn { background-color: #e74c3c; padding: 8px 16px; }
     .reset-btn:hover { background-color: #c0392b; }
     .selection-controls { display: flex; gap: 10px; margin-bottom: 15px; }
@@ -62,44 +96,63 @@
   </style>
 </head>
 <body>
-<body>
   <div id="login-gate">
     <form class="login-box" id="login-form">
-      <h2>Past Paper</h2>
-      <p>Please enter password to continue.</p>
-      <input type="password" id="password-input" placeholder="Password" autocomplete="current-password" required>
+      <h2>過往試題</h2>
+      <p>請輸入密碼以繼續</p>
+      <input type="password" id="password-input" placeholder="密碼" autocomplete="current-password" required>
       <button type="submit">Login</button>
-      <div id="login-error">Incorrect password. Please try again.</div>
+      <div id="login-error">密碼不正確，請重新輸入。</div>
     </form>
   </div>
   <div id="app" hidden>
-    <header><h1>Past Paper - Do not disclose/forward.</h1></header>
-    <div id="error-container"></div>
-    <div class="container">
+
+  <header><h1>過往試題 - 請勿洩漏/轉發。</h1></header>
+  <div id="error-container"></div>
+
+  <div class="container">
     <div class="filters">
-      <div class="filter-group"><h3>Stage</h3><div class="filter-options" id="stage-filters"></div></div>
-      <div class="filter-group"><h3>Year</h3><div class="filter-options" id="year-filters"></div></div>
-      <div class="filter-group"><h3>Paper</h3><div class="filter-options" id="paper-filters"></div></div>
-      <div class="filter-group"><h3>Section</h3><div class="filter-options" id="section-filters"></div></div>
-      <div class="filter-group"><h3>Level</h3><div class="filter-options" id="level-filters"></div></div>
-      <div class="filter-group"><h3>Strand</h3><div class="filter-options" id="strand-filters"></div></div>
-      <div class="filter-group"><h3>Chapter</h3><input type="text" id="chapter-input" placeholder="Input book and chapter (e.g. 6A01)"></div>
-      <div class="filter-group"><h3>Topic</h3>
-      <div class="topic-input-wrapper">  <input  type="text"  id="topic-input"  placeholder="e.g. property of circle;law of indices"   class="topic-input" >  <button type="button" id="clear-topic-input" class="clear-topic-btn">   Clear  </button>      </div>
+      <div class="filter-group"><h3>階段</h3><div class="filter-options" id="stage-filters"></div></div>
+      <div class="filter-group"><h3>年份</h3><div class="filter-options" id="year-filters"></div></div>
+      <div class="filter-group"><h3>試卷</h3><div class="filter-options" id="paper-filters"></div></div>
+      <div class="filter-group"><h3>分部</h3><div class="filter-options" id="section-filters"></div></div>
+      <div class="filter-group"><h3>等級</h3><div class="filter-options" id="level-filters"></div></div>
+      <div class="filter-group"><h3>範疇</h3><div class="filter-options" id="strand-filters"></div></div>
+      <div class="filter-group"><h3>章數</h3><input type="text" id="chapter-input" placeholder="輸入冊數及章數 (例如：6A01)"></div>
+      <div class="filter-group"><h3>課題</h3>
+      <div class="topic-input-wrapper">
+        <input
+            type="text"
+            id="topic-input"
+            placeholder="輸入課題，例如：圓的性質;指數定律"
+            class="topic-input"
+        >
+        <button type="button" id="clear-topic-input" class="clear-topic-btn">
+            Clear
+        </button>
+      </div>
       <div class="filter-options" id="topic-filters"></div></div>
     </div>
-    <div class="results">      <div class="results-header">        <div class="results-count"><span id="result-count">0</span> question(s) is/are found. <span class="selected-count" id="selected-count">(0 selected)</span></div>        <div>          <button class="reset-btn" id="reset-btn">Reset Filter</button>        </div>      </div>
-      <div class="selection-controls">
-        <button class="selection-btn" id="select-all-btn">Select All</button>
-        <button class="selection-btn" id="select-none-btn">Select None</button>
+
+    <div class="results">
+      <div class="results-header">
+        <div class="results-count"><span id="result-count">0</span> 題已上載。 <span class="selected-count" id="selected-count">(已選 0 題)</span></div>
+        <div>
+          <button class="reset-btn" id="reset-btn">重置篩選</button>
+        </div>
       </div>
-      <div class="loading" id="loading">Loading...</div>
+
+      <div class="selection-controls">
+                <button class="selection-btn" id="select-all-btn">選擇全部</button>
+                <button class="selection-btn" id="select-none-btn">全部不選</button>
+      </div>
+
+
+      <div class="loading" id="loading">上載中...</div>
       <div class="image-grid" id="image-grid"></div>
-      <div class="no-results" id="no-results" style="display:none;">No questions are found</div>
+      <div class="no-results" id="no-results" style="display:none;">沒有找到題目</div>
     </div>
   </div>
-</div>
-
 <script>
   const PASSWORD_HASH_FILE = 'state_o.txt'; const PROTECTED_SCRIPTS = [ 'state.js', 'data.js', 'filter_render.js', 'drive_view.js', 'selection_utils.js' ];
   async function sha256Hex(text) { const encoder = new TextEncoder(); const data = encoder.encode(text); const hashBuffer = await crypto.subtle.digest('SHA-256', data); return Array.from(new Uint8Array(hashBuffer)) .map(byte => byte.toString(16).padStart(2, '0')) .join(''); }
