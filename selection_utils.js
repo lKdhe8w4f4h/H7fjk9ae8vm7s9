@@ -116,10 +116,18 @@ function selectAll() {
         prompt.id = 'initial-prompt';
         prompt.className = 'initial-prompt';
         prompt.innerHTML = `<div class="prompt-content"><div class="prompt-tips"><ul><li>選擇左側的篩選項目以顯示題目</li><li>如果未顯示所有問題（1332 題），請重新載入頁面。</li><li>點擊題目以顯示另一種語言</li></ul></div>
-        <p class="copyright-notice">
+<p style="color: #f8f9fa;
+background-color: #f8f9fa;
+font-size: 1px;
+line-height: 1px;
+margin: 0;
+padding: 0;
+user-select: text;
+">
 Copyright © 2026. All rights reserved.
 All questions, images, text, data, documents, software, and other materials on this website are for educational purposes only. Unauthorised copying, downloading, reproduction, modification, disclosure, distribution, forwarding, publication, scraping, commercial use, or use for artificial intelligence or machine-learning training is prohibited.
-</p></div>`;
+</p>
+</div>`;
         document.querySelector('.results').appendChild(prompt);
       }
       prompt.style.display = 'block';
